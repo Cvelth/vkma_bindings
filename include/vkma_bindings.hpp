@@ -26,12 +26,12 @@
 # define VKMA_STATS_STRING_ENABLED VMA_STATS_STRING_ENABLED
 #endif
 
-VK_DEFINE_HANDLE(VkmaAllocator)
-VK_DEFINE_HANDLE(VkmaBuffer)
-VK_DEFINE_HANDLE(VkmaImage)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkmaAllocation)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkmaDefragmentationContext)
-VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkmaPool)
+VK_DEFINE_HANDLE(VkmaAllocator) // parent: none
+VK_DEFINE_HANDLE(VkmaBuffer) // parent: VkmaAllocator
+VK_DEFINE_HANDLE(VkmaImage) // parent: VkmaAllocator
+VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkmaAllocation) // parent: VkmaAllocator
+VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkmaDefragmentationContext) // parent: VkmaAllocator
+VK_DEFINE_NON_DISPATCHABLE_HANDLE(VkmaPool) // parent: VkmaAllocator
 
 struct VkmaBuffer_T {
     VkBuffer buffer;
