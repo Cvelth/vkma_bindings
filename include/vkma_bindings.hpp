@@ -262,8 +262,9 @@ VkBool32 vkmaTouchAllocation(VkmaAllocator allocator, VkmaAllocation allocation)
 inline void vkmaSetAllocationUserData(VkmaAllocator allocator, VkmaAllocation allocation, const void *pUserData) {
     vmaSetAllocationUserData(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation), const_cast<void *>(pUserData));
 }
-inline void vkmaCreateLostAllocation(VkmaAllocator allocator, VkmaAllocation *pAllocation) {
+inline VkmaResult vkmaCreateLostAllocation(VkmaAllocator allocator, VkmaAllocation *pAllocation) {
     vmaCreateLostAllocation(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation *>(pAllocation));
+    return VK_SUCCESS;
 }
 inline VkmaResult vkmaMapMemory(VkmaAllocator allocator, VkmaAllocation allocation, void **ppData) {
     return vmaMapMemory(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation), ppData);
