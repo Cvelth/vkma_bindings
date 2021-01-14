@@ -156,8 +156,8 @@ static_assert(std::is_standard_layout<VkmaStats>::value, "struct wrapper is not 
 // [[deprecated]]
 // using VkmaDefragmentationInfo = VmaDefragmentationInfo;
 
-inline VkmaResult vkmaCreateAllocator(VkmaAllocatorCreateInfo const *pCreateInfo, VkmaAllocator *pAllocator) {
-    return vmaCreateAllocator(reinterpret_cast<VmaAllocatorCreateInfo const *>(pCreateInfo), reinterpret_cast<VmaAllocator *>(pAllocator));
+inline VkmaResult vkmaCreateAllocator(const VkmaAllocatorCreateInfo *pCreateInfo, VkmaAllocator *pAllocator) {
+    return vmaCreateAllocator(reinterpret_cast<const VmaAllocatorCreateInfo *>(pCreateInfo), reinterpret_cast<VmaAllocator *>(pAllocator));
 }
 inline void vkmaDestroyAllocator(VkmaAllocator allocator) {
     return vmaDestroyAllocator(reinterpret_cast<VmaAllocator>(allocator));
@@ -165,7 +165,7 @@ inline void vkmaDestroyAllocator(VkmaAllocator allocator) {
 
 inline void vkmaGetPhysicalDeviceProperties(VkmaAllocator allocator, VkPhysicalDeviceProperties *pPhysicalDeviceProperties) {
     VMA_ASSERT(pPhysicalDeviceProperties);
-    VkPhysicalDeviceProperties const *temp = nullptr;
+    const VkPhysicalDeviceProperties *temp = nullptr;
     vmaGetPhysicalDeviceProperties(reinterpret_cast<VmaAllocator>(allocator), &temp);
 
     VMA_ASSERT(temp);
@@ -173,7 +173,7 @@ inline void vkmaGetPhysicalDeviceProperties(VkmaAllocator allocator, VkPhysicalD
 }
 inline void vkmaGetMemoryProperties(VkmaAllocator allocator, VkPhysicalDeviceMemoryProperties *pPhysicalDeviceMemoryProperties) {
     VMA_ASSERT(pPhysicalDeviceMemoryProperties);
-    VkPhysicalDeviceMemoryProperties const *temp = nullptr;
+    const VkPhysicalDeviceMemoryProperties *temp = nullptr;
     vmaGetMemoryProperties(reinterpret_cast<VmaAllocator>(allocator), &temp);
 
     VMA_ASSERT(temp);
@@ -200,18 +200,18 @@ inline void vkmaFreeStatsString(VkmaAllocator allocator, char *pStatsString) {
     vmaFreeStatsString(reinterpret_cast<VmaAllocator>(allocator), pStatsString);
 }
 
-inline VkmaResult vkmaFindMemoryTypeIndex(VkmaAllocator allocator, uint32_t memoryTypeBits, VkmaAllocationCreateInfo const *pAllocationCreateInfo, uint32_t *pMemoryTypeIndex) {
-    return vmaFindMemoryTypeIndex(reinterpret_cast<VmaAllocator>(allocator), memoryTypeBits, reinterpret_cast<VmaAllocationCreateInfo const *>(pAllocationCreateInfo), pMemoryTypeIndex);
+inline VkmaResult vkmaFindMemoryTypeIndex(VkmaAllocator allocator, uint32_t memoryTypeBits, const VkmaAllocationCreateInfo *pAllocationCreateInfo, uint32_t *pMemoryTypeIndex) {
+    return vmaFindMemoryTypeIndex(reinterpret_cast<VmaAllocator>(allocator), memoryTypeBits, reinterpret_cast<const VmaAllocationCreateInfo *>(pAllocationCreateInfo), pMemoryTypeIndex);
 }
-inline VkmaResult vkmaFindMemoryTypeIndexForBufferInfo(VkmaAllocator allocator, VkBufferCreateInfo const *pBufferCreateInfo, VkmaAllocationCreateInfo const *pAllocationCreateInfo, uint32_t *pMemoryTypeIndex) {
-    return vmaFindMemoryTypeIndexForBufferInfo(reinterpret_cast<VmaAllocator>(allocator), pBufferCreateInfo, reinterpret_cast<VmaAllocationCreateInfo const *>(pAllocationCreateInfo), pMemoryTypeIndex);
+inline VkmaResult vkmaFindMemoryTypeIndexForBufferInfo(VkmaAllocator allocator, const VkBufferCreateInfo *pBufferCreateInfo, const VkmaAllocationCreateInfo *pAllocationCreateInfo, uint32_t *pMemoryTypeIndex) {
+    return vmaFindMemoryTypeIndexForBufferInfo(reinterpret_cast<VmaAllocator>(allocator), pBufferCreateInfo, reinterpret_cast<const VmaAllocationCreateInfo *>(pAllocationCreateInfo), pMemoryTypeIndex);
 }
-inline VkmaResult vkmaFindMemoryTypeIndexForImageInfo(VkmaAllocator allocator, VkImageCreateInfo const *pImageCreateInfo, VkmaAllocationCreateInfo const *pAllocationCreateInfo, uint32_t *pMemoryTypeIndex) {
-    return vmaFindMemoryTypeIndexForImageInfo(reinterpret_cast<VmaAllocator>(allocator), pImageCreateInfo, reinterpret_cast<VmaAllocationCreateInfo const *>(pAllocationCreateInfo), pMemoryTypeIndex);
+inline VkmaResult vkmaFindMemoryTypeIndexForImageInfo(VkmaAllocator allocator, const VkImageCreateInfo *pImageCreateInfo, const VkmaAllocationCreateInfo *pAllocationCreateInfo, uint32_t *pMemoryTypeIndex) {
+    return vmaFindMemoryTypeIndexForImageInfo(reinterpret_cast<VmaAllocator>(allocator), pImageCreateInfo, reinterpret_cast<const VmaAllocationCreateInfo *>(pAllocationCreateInfo), pMemoryTypeIndex);
 }
 
-inline VkmaResult vkmaCreatePool(VkmaAllocator allocator, VkmaPoolCreateInfo const *pCreateInfo, VkmaPool *pPool) {
-    return vmaCreatePool(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaPoolCreateInfo const *>(pCreateInfo), reinterpret_cast<VmaPool *>(pPool));
+inline VkmaResult vkmaCreatePool(VkmaAllocator allocator, const VkmaPoolCreateInfo *pCreateInfo, VkmaPool *pPool) {
+    return vmaCreatePool(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<const VmaPoolCreateInfo *>(pCreateInfo), reinterpret_cast<VmaPool *>(pPool));
 }
 inline void vkmaDestroyPool(VkmaAllocator allocator, VkmaPool pool) {
     vmaDestroyPool(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaPool>(pool));
@@ -225,30 +225,30 @@ inline void vkmaMakePoolAllocationsLost(VkmaAllocator allocator, VkmaPool pool, 
 inline VkmaResult vkmaCheckPoolCorruption(VkmaAllocator allocator, VkmaPool pool) {
     return vmaCheckPoolCorruption(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaPool>(pool));
 }
-inline void vkmaGetPoolName(VkmaAllocator allocator, VkmaPool pool, char const **ppName) {
+inline void vkmaGetPoolName(VkmaAllocator allocator, VkmaPool pool, const char **ppName) {
     vmaGetPoolName(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaPool>(pool), ppName);
 }
-inline void vkmaSetPoolName(VkmaAllocator allocator, VkmaPool pool, char const *pName) {
+inline void vkmaSetPoolName(VkmaAllocator allocator, VkmaPool pool, const char *pName) {
     vmaSetPoolName(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaPool>(pool), pName);
 }
 
-inline VkmaResult vkmaAllocateMemory(VkmaAllocator allocator, VkMemoryRequirements const *pVkMemoryRequirements, VkmaAllocationCreateInfo const *pCreateInfo, VkmaAllocation *pAllocation) {
-    return vmaAllocateMemory(reinterpret_cast<VmaAllocator>(allocator), pVkMemoryRequirements, reinterpret_cast<VmaAllocationCreateInfo const *>(pCreateInfo), reinterpret_cast<VmaAllocation *>(pAllocation), nullptr);
+inline VkmaResult vkmaAllocateMemory(VkmaAllocator allocator, const VkMemoryRequirements *pVkMemoryRequirements, const VkmaAllocationCreateInfo *pCreateInfo, VkmaAllocation *pAllocation) {
+    return vmaAllocateMemory(reinterpret_cast<VmaAllocator>(allocator), pVkMemoryRequirements, reinterpret_cast<const VmaAllocationCreateInfo *>(pCreateInfo), reinterpret_cast<VmaAllocation *>(pAllocation), nullptr);
 }
-inline VkmaResult vkmaAllocateMemoryPages(VkmaAllocator allocator, VkMemoryRequirements const *pVkMemoryRequirements, VkmaAllocationCreateInfo const *pCreateInfo, size_t allocationCount, VkmaAllocation *pAllocations) {
-    return vmaAllocateMemoryPages(reinterpret_cast<VmaAllocator>(allocator), pVkMemoryRequirements, reinterpret_cast<VmaAllocationCreateInfo const *>(pCreateInfo), allocationCount, reinterpret_cast<VmaAllocation *>(pAllocations), nullptr);
+inline VkmaResult vkmaAllocateMemoryPages(VkmaAllocator allocator, const VkMemoryRequirements *pVkMemoryRequirements, const VkmaAllocationCreateInfo *pCreateInfo, size_t allocationCount, VkmaAllocation *pAllocations) {
+    return vmaAllocateMemoryPages(reinterpret_cast<VmaAllocator>(allocator), pVkMemoryRequirements, reinterpret_cast<const VmaAllocationCreateInfo *>(pCreateInfo), allocationCount, reinterpret_cast<VmaAllocation *>(pAllocations), nullptr);
 }
-inline VkmaResult vkmaAllocateMemoryForBuffer(VkmaAllocator allocator, VkBuffer buffer, VkmaAllocationCreateInfo const *pCreateInfo, VkmaAllocation *pAllocation) {
-    return vmaAllocateMemoryForBuffer(reinterpret_cast<VmaAllocator>(allocator), buffer, reinterpret_cast<VmaAllocationCreateInfo const *>(pCreateInfo), reinterpret_cast<VmaAllocation *>(pAllocation), nullptr);
+inline VkmaResult vkmaAllocateMemoryForBuffer(VkmaAllocator allocator, VkBuffer buffer, const VkmaAllocationCreateInfo *pCreateInfo, VkmaAllocation *pAllocation) {
+    return vmaAllocateMemoryForBuffer(reinterpret_cast<VmaAllocator>(allocator), buffer, reinterpret_cast<const VmaAllocationCreateInfo *>(pCreateInfo), reinterpret_cast<VmaAllocation *>(pAllocation), nullptr);
 }
-inline VkmaResult vkmaAllocateMemoryForImage(VkmaAllocator allocator, VkImage image, VkmaAllocationCreateInfo const *pCreateInfo, VkmaAllocation *pAllocation) {
-    return vmaAllocateMemoryForImage(reinterpret_cast<VmaAllocator>(allocator), image, reinterpret_cast<VmaAllocationCreateInfo const *>(pCreateInfo), reinterpret_cast<VmaAllocation *>(pAllocation), nullptr);
+inline VkmaResult vkmaAllocateMemoryForImage(VkmaAllocator allocator, VkImage image, const VkmaAllocationCreateInfo *pCreateInfo, VkmaAllocation *pAllocation) {
+    return vmaAllocateMemoryForImage(reinterpret_cast<VmaAllocator>(allocator), image, reinterpret_cast<const VmaAllocationCreateInfo *>(pCreateInfo), reinterpret_cast<VmaAllocation *>(pAllocation), nullptr);
 }
-inline void vkmaFreeMemory(VkmaAllocator allocator, VkmaAllocation const allocation) {
+inline void vkmaFreeMemory(VkmaAllocator allocator, const VkmaAllocation allocation) {
     vmaFreeMemory(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation));
 }
-inline void vkmaFreeMemoryPages(VkmaAllocator allocator, size_t allocationCount, VkmaAllocation const *pAllocations) {
-    vmaFreeMemoryPages(reinterpret_cast<VmaAllocator>(allocator), allocationCount, reinterpret_cast<VmaAllocation const *>(pAllocations));
+inline void vkmaFreeMemoryPages(VkmaAllocator allocator, size_t allocationCount, const VkmaAllocation *pAllocations) {
+    vmaFreeMemoryPages(reinterpret_cast<VmaAllocator>(allocator), allocationCount, reinterpret_cast<const VmaAllocation *>(pAllocations));
 }
 inline VkmaResult vkmaResizeAllocation(VkmaAllocator allocator, VkmaAllocation allocation, VkDeviceSize newSize) {
     return vmaResizeAllocation(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation), newSize);
@@ -259,7 +259,7 @@ inline void vkmaGetAllocationInfo(VkmaAllocator allocator, VkmaAllocation alloca
 VkBool32 vkmaTouchAllocation(VkmaAllocator allocator, VkmaAllocation allocation) {
     return vmaTouchAllocation(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation));
 }
-inline void vkmaSetAllocationUserData(VkmaAllocator allocator, VkmaAllocation allocation, void const *pUserData) {
+inline void vkmaSetAllocationUserData(VkmaAllocator allocator, VkmaAllocation allocation, const void *pUserData) {
     vmaSetAllocationUserData(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation), const_cast<void *>(pUserData));
 }
 inline void vkmaCreateLostAllocation(VkmaAllocator allocator, VkmaAllocation *pAllocation) {
@@ -282,7 +282,7 @@ inline VkmaResult vkmaCheckCorruption(VkmaAllocator allocator, uint32_t memoryTy
     return vmaCheckCorruption(reinterpret_cast<VmaAllocator>(allocator), memoryTypeBits);
 }
 inline VkmaResult vkmaDefragmentationBegin(VkmaAllocator allocator, const VkmaDefragmentationInfo2 *pInfo, VkmaDefragmentationContext *pContext) {
-    return vmaDefragmentationBegin(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaDefragmentationInfo2 const *>(pInfo), nullptr, reinterpret_cast<VmaDefragmentationContext *>(pContext));
+    return vmaDefragmentationBegin(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<const VmaDefragmentationInfo2 *>(pInfo), nullptr, reinterpret_cast<VmaDefragmentationContext *>(pContext));
 }
 inline VkmaResult vkmaDefragmentationEnd(VkmaAllocator allocator, VkmaDefragmentationContext context) {
     return vmaDefragmentationEnd(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaDefragmentationContext>(context));
@@ -291,30 +291,30 @@ inline VkmaResult vkmaDefragmentationEnd(VkmaAllocator allocator, VkmaDefragment
 inline VkmaResult vkmaBindBufferMemory(VkmaAllocator allocator, VkmaAllocation allocation, VkBuffer buffer) {
     return vmaBindBufferMemory(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation), buffer);
 }
-inline VkmaResult vkmaBindBufferMemory2(VkmaAllocator allocator, VkmaAllocation allocation, VkDeviceSize allocationLocalOffset, VkBuffer buffer, void const *pNext) {
+inline VkmaResult vkmaBindBufferMemory2(VkmaAllocator allocator, VkmaAllocation allocation, VkDeviceSize allocationLocalOffset, VkBuffer buffer, const void *pNext) {
     return vmaBindBufferMemory2(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation), allocationLocalOffset, buffer, pNext);
 }
 inline VkmaResult vkmaBindImageMemory(VkmaAllocator allocator, VkmaAllocation allocation, VkImage image) {
     return vmaBindImageMemory(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation), image);
 }
-inline VkmaResult vkmaBindImageMemory2(VkmaAllocator allocator, VkmaAllocation allocation, VkDeviceSize allocationLocalOffset, VkImage image, void const *pNext) {
+inline VkmaResult vkmaBindImageMemory2(VkmaAllocator allocator, VkmaAllocation allocation, VkDeviceSize allocationLocalOffset, VkImage image, const void *pNext) {
     return vmaBindImageMemory2(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation), allocationLocalOffset, image, pNext);
 }
 
-inline VkmaResult vkmaCreateBuffer(VkmaAllocator allocator, VkBufferCreateInfo const *pBufferCreateInfo, VkmaAllocationCreateInfo const *pAllocationCreateInfo, VkmaBuffer *pBuffer) {
+inline VkmaResult vkmaCreateBuffer(VkmaAllocator allocator, const VkBufferCreateInfo *pBufferCreateInfo, const VkmaAllocationCreateInfo *pAllocationCreateInfo, VkmaBuffer *pBuffer) {
     VMA_ASSERT(pBuffer && *pBuffer);
     *pBuffer = reinterpret_cast<VkmaBuffer>(new VkmaBuffer_T{});
-    return vmaCreateBuffer(reinterpret_cast<VmaAllocator>(allocator), pBufferCreateInfo, reinterpret_cast<VmaAllocationCreateInfo const *>(pAllocationCreateInfo), &reinterpret_cast<VkmaBuffer_T *>(*pBuffer)->buffer, reinterpret_cast<VmaAllocation *>(&reinterpret_cast<VkmaBuffer_T *>(*pBuffer)->allocation), nullptr);
+    return vmaCreateBuffer(reinterpret_cast<VmaAllocator>(allocator), pBufferCreateInfo, reinterpret_cast<const VmaAllocationCreateInfo *>(pAllocationCreateInfo), &reinterpret_cast<VkmaBuffer_T *>(*pBuffer)->buffer, reinterpret_cast<VmaAllocation *>(&reinterpret_cast<VkmaBuffer_T *>(*pBuffer)->allocation), nullptr);
 }
 inline void vkmaDestroyBuffer(VkmaAllocator allocator, VkmaBuffer buffer) {
     VMA_ASSERT(buffer);
     vmaDestroyBuffer(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VkmaBuffer_T *>(buffer)->buffer, reinterpret_cast<VmaAllocation>(reinterpret_cast<VkmaBuffer_T *>(buffer)->allocation));
     delete reinterpret_cast<VkmaBuffer_T *>(buffer);
 }
-inline VkmaResult vkmaCreateImage(VkmaAllocator allocator, VkImageCreateInfo const *pImageCreateInfo, VkmaAllocationCreateInfo const *pAllocationCreateInfo, VkmaImage *pImage) {
+inline VkmaResult vkmaCreateImage(VkmaAllocator allocator, const VkImageCreateInfo *pImageCreateInfo, const VkmaAllocationCreateInfo *pAllocationCreateInfo, VkmaImage *pImage) {
     VMA_ASSERT(pImage && *pImage);
     *pImage = reinterpret_cast<VkmaImage>(new VkmaImage_T{});
-    return vmaCreateImage(reinterpret_cast<VmaAllocator>(allocator), pImageCreateInfo, reinterpret_cast<VmaAllocationCreateInfo const *>(pAllocationCreateInfo), &reinterpret_cast<VkmaImage_T *>(*pImage)->image, reinterpret_cast<VmaAllocation *>(&reinterpret_cast<VkmaImage_T *>(*pImage)->allocation), nullptr);
+    return vmaCreateImage(reinterpret_cast<VmaAllocator>(allocator), pImageCreateInfo, reinterpret_cast<const VmaAllocationCreateInfo *>(pAllocationCreateInfo), &reinterpret_cast<VkmaImage_T *>(*pImage)->image, reinterpret_cast<VmaAllocation *>(&reinterpret_cast<VkmaImage_T *>(*pImage)->allocation), nullptr);
 }
 inline void vkmaDestroyImage(VkmaAllocator allocator, VkmaImage image) {
     VMA_ASSERT(image);
@@ -340,6 +340,6 @@ inline void vkmaGetImageAllocation(VkmaImage image, VkmaAllocation *pAllocation)
 }
 
 // [[deprecated]]
-// VkmaResult vkmaDefragment(VkmaAllocator allocator, VkmaAllocation const *pAllocations, size_t allocationCount, VkBool32 *pAllocationsChanged, VkmaDefragmentationInfo const *pDefragmentationInfo, VkmaDefragmentationStats *pDefragmentationStats)
+// VkmaResult vkmaDefragment(VkmaAllocator allocator, const VkmaAllocation *pAllocations, size_t allocationCount, VkBool32 *pAllocationsChanged, const VkmaDefragmentationInfo *pDefragmentationInfo, VkmaDefragmentationStats *pDefragmentationStats)
 
 #endif // VKMA_BINDINGS_HPP
