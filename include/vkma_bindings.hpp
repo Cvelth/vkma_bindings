@@ -26,6 +26,8 @@
 # define VKMA_STATS_STRING_ENABLED VMA_STATS_STRING_ENABLED
 #endif
 
+#define VKMA_NULL_HANDLE VK_NULL_HANDLE
+
 VK_DEFINE_HANDLE(VkmaAllocator) // parent: none
 VK_DEFINE_HANDLE(VkmaBuffer) // parent: VkmaAllocator
 VK_DEFINE_HANDLE(VkmaImage) // parent: VkmaAllocator
