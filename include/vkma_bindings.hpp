@@ -227,8 +227,8 @@ inline void vkmaGetBudget(VkmaAllocator allocator, VkmaBudget *pBudget) {
 inline void vkmaBuildStatsString(VkmaAllocator allocator, VkBool32 detailedMap, char **ppStatsString) {
     vmaBuildStatsString(reinterpret_cast<VmaAllocator>(allocator), ppStatsString, detailedMap);
 }
-inline void vkmaFreeStatsString(VkmaAllocator allocator, char *pStatsString) {
-    vmaFreeStatsString(reinterpret_cast<VmaAllocator>(allocator), pStatsString);
+inline void vkmaFreeStatsString(VkmaAllocator allocator, const char *pStatsString) {
+    vmaFreeStatsString(reinterpret_cast<VmaAllocator>(allocator), const_cast<char *>(pStatsString));
 }
 
 inline VkmaResult vkmaFindMemoryTypeIndex(VkmaAllocator allocator, uint32_t memoryTypeBits, const VkmaAllocationCreateInfo *pAllocationCreateInfo, uint32_t *pMemoryTypeIndex) {
