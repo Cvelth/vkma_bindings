@@ -127,7 +127,7 @@ typedef struct VkmaVulkanFunctions {
     PFN_vkBindImageMemory2KHR vkBindImageMemory2KHR;
     
     PFN_vkGetPhysicalDeviceMemoryProperties2KHR vkGetPhysicalDeviceMemoryProperties2KHR;
-}
+} VkmaVulkanFunctions;
 static_assert(sizeof(VkmaVulkanFunctions) >= sizeof(VmaVulkanFunctions), "struct and wrapper have different size!");
 static_assert(std::is_standard_layout<VkmaVulkanFunctions>::value, "struct wrapper is not a standard layout!");
 
