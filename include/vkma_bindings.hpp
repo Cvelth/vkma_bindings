@@ -334,7 +334,7 @@ inline VkmaResult vkmaBindImageMemory2(VkmaAllocator allocator, VkmaAllocation a
 }
 
 inline VkmaResult vkmaCreateBuffer(VkmaAllocator allocator, const VkBufferCreateInfo *pBufferCreateInfo, const VkmaAllocationCreateInfo *pAllocationCreateInfo, VkmaBuffer *pBuffer) {
-    VMA_ASSERT(pBuffer && *pBuffer);
+    VMA_ASSERT(pBuffer);
     *pBuffer = reinterpret_cast<VkmaBuffer>(new VkmaBuffer_T{});
     return vmaCreateBuffer(reinterpret_cast<VmaAllocator>(allocator), pBufferCreateInfo, reinterpret_cast<const VmaAllocationCreateInfo *>(pAllocationCreateInfo), &reinterpret_cast<VkmaBuffer_T *>(*pBuffer)->buffer, reinterpret_cast<VmaAllocation *>(&reinterpret_cast<VkmaBuffer_T *>(*pBuffer)->allocation), nullptr);
 }
@@ -344,7 +344,7 @@ inline void vkmaDestroyBuffer(VkmaAllocator allocator, VkmaBuffer buffer) {
     delete reinterpret_cast<VkmaBuffer_T *>(buffer);
 }
 inline VkmaResult vkmaCreateImage(VkmaAllocator allocator, const VkImageCreateInfo *pImageCreateInfo, const VkmaAllocationCreateInfo *pAllocationCreateInfo, VkmaImage *pImage) {
-    VMA_ASSERT(pImage && *pImage);
+    VMA_ASSERT(pImage);
     *pImage = reinterpret_cast<VkmaImage>(new VkmaImage_T{});
     return vmaCreateImage(reinterpret_cast<VmaAllocator>(allocator), pImageCreateInfo, reinterpret_cast<const VmaAllocationCreateInfo *>(pAllocationCreateInfo), &reinterpret_cast<VkmaImage_T *>(*pImage)->image, reinterpret_cast<VmaAllocation *>(&reinterpret_cast<VkmaImage_T *>(*pImage)->allocation), nullptr);
 }
