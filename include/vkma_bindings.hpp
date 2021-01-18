@@ -313,10 +313,10 @@ inline VkmaResult vkmaInvalidateAllocation(VkmaAllocator allocator, VkmaAllocati
 inline VkmaResult vkmaCheckCorruption(VkmaAllocator allocator, uint32_t memoryTypeBits) {
     return vmaCheckCorruption(reinterpret_cast<VmaAllocator>(allocator), memoryTypeBits);
 }
-inline VkmaResult vkmaCreateDefragmentationContext(VkmaAllocator allocator, const VkmaDefragmentationInfo2 *pInfo, VkmaDefragmentationContext *pContext) {
+inline VkmaResult vkmaBeginDefragmentation(VkmaAllocator allocator, const VkmaDefragmentationInfo2 *pInfo, VkmaDefragmentationContext *pContext) {
     return vmaDefragmentationBegin(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<const VmaDefragmentationInfo2 *>(pInfo), nullptr, reinterpret_cast<VmaDefragmentationContext *>(pContext));
 }
-inline VkmaResult vkmaDestroyDefragmentationContext(VkmaAllocator allocator, VkmaDefragmentationContext context) {
+inline VkmaResult vkmaEndDefragmentation(VkmaAllocator allocator, VkmaDefragmentationContext context) {
     return vmaDefragmentationEnd(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaDefragmentationContext>(context));
 }
 
