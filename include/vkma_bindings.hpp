@@ -326,7 +326,7 @@ inline VkmaResult vkmaResizeAllocation(VkmaAllocator allocator, VkmaAllocation a
 inline void vkmaGetAllocationInfo(VkmaAllocator allocator, VkmaAllocation allocation, VkmaAllocationInfo *pAllocationInfo) {
     vmaGetAllocationInfo(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation), pAllocationInfo);
 }
-VkBool32 vkmaTouchAllocation(VkmaAllocator allocator, VkmaAllocation allocation) {
+inline VkBool32 vkmaTouchAllocation(VkmaAllocator allocator, VkmaAllocation allocation) {
     return vmaTouchAllocation(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaAllocation>(allocation));
 }
 inline void vkmaSetAllocationUserData(VkmaAllocator allocator, VkmaAllocation allocation, const void *pUserData) {
