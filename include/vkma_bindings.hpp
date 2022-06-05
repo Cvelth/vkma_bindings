@@ -243,7 +243,7 @@ typedef struct VkmaDefragmentationInfo {
   VkmaPool VMA_NULLABLE pool;
   VkDeviceSize maxBytesPerPass;
   uint32_t maxAllocationsPerPass;
-} VkmaDefragmentationInfo2;
+} VkmaDefragmentationInfo;
 static_assert(sizeof(VkmaDefragmentationInfo) == sizeof(VmaDefragmentationInfo),
               "struct and wrapper have different size!");
 static_assert(std::is_standard_layout<VkmaDefragmentationInfo>::value,
@@ -641,9 +641,11 @@ inline void vkmaClearVirtualBlock(VkmaVirtualBlock virtualBlock) {
 }
 
 inline void vkmaSetVirtualAllocationUserData(VkmaVirtualBlock virtualBlock,
-                                             VkmaVirtualAllocation allocation, void *pUserData) {
+                                             VkmaVirtualAllocation allocation,
+                                             const void *pUserData) {
   vmaSetVirtualAllocationUserData(reinterpret_cast<VmaVirtualBlock>(virtualBlock),
-                                  reinterpret_cast<VmaVirtualAllocation>(allocation), pUserData);
+                                  reinterpret_cast<VmaVirtualAllocation>(allocation),
+                                  const_cast<void *>(pUserData));
 }
 inline void vkmaGetVirtualBlockStatistics(VkmaVirtualBlock virtualBlock, VkmaStatistics *pStats) {
   vmaGetVirtualBlockStatistics(reinterpret_cast<VmaVirtualBlock>(virtualBlock),
