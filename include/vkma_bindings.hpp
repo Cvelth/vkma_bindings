@@ -177,6 +177,9 @@ typedef struct VkmaVulkanFunctions {
   PFN_vkBindImageMemory2KHR vkBindImageMemory2KHR;
 
   PFN_vkGetPhysicalDeviceMemoryProperties2KHR vkGetPhysicalDeviceMemoryProperties2KHR;
+
+  PFN_vkGetDeviceBufferMemoryRequirements vkGetDeviceBufferMemoryRequirements;
+  PFN_vkGetDeviceImageMemoryRequirements vkGetDeviceImageMemoryRequirements;
 } VkmaVulkanFunctions;
 static_assert(sizeof(VkmaVulkanFunctions) >= sizeof(VmaVulkanFunctions),
               "struct and wrapper have different size!");
@@ -190,9 +193,11 @@ typedef struct VkmaAllocatorCreateInfo {
   VkDeviceSize preferredLargeHeapBlockSize;
   const VkAllocationCallbacks *VMA_NULLABLE pAllocationCallbacks;
   const VkmaDeviceMemoryCallbacks *VMA_NULLABLE pDeviceMemoryCallbacks;
+  const VkDeviceSize *VMA_NULLABLE pHeapSizeLimit;
   const VkmaVulkanFunctions *VMA_NULLABLE pVulkanFunctions;
   VkInstance VMA_NOT_NULL instance;
   uint32_t vulkanApiVersion;
+  const VkExternalMemoryHandleTypeFlagsKHR *VMA_NULLABLE pTypeExternalMemoryHandleTypes;
 } VkmaAllocatorCreateInfo;
 static_assert(sizeof(VkmaAllocatorCreateInfo) == sizeof(VmaAllocatorCreateInfo),
               "struct and wrapper have different size!");
@@ -216,7 +221,7 @@ static_assert(std::is_standard_layout<VkmaDetailedStatistics>::value,
 
 typedef struct VkmaTotalStatistics {
   VkmaDetailedStatistics memoryType[VK_MAX_MEMORY_TYPES];
-  VkmaDetailedStatistics memoryHeap[VK_MAX_MEMORY_TYPES];
+  VkmaDetailedStatistics memoryHeap[VK_MAX_MEMORY_HEAPS];
   VkmaDetailedStatistics total;
 } VkmaTotalStatistics;
 static_assert(sizeof(VkmaTotalStatistics) == sizeof(VmaTotalStatistics),
@@ -338,8 +343,8 @@ inline void vkmaSetCurrentFrameIndex(VkmaAllocator allocator, uint32_t frameInde
 }
 
 inline void vkmaCalculateStatistics(VkmaAllocator allocator, VkmaTotalStatistics *pStats) {
-  vmaCalculateStats(reinterpret_cast<VmaAllocator>(allocator),
-                    reinterpret_cast<VmaTotalStatistics *>(pStats));
+  vmaCalculateStatistics(reinterpret_cast<VmaAllocator>(allocator),
+                         reinterpret_cast<VmaTotalStatistics *>(pStats));
 }
 
 inline void vkmaGetHeapBudgets(VkmaAllocator allocator, VkmaBudget *pBudgets) {
@@ -385,14 +390,14 @@ inline void vkmaDestroyPool(VkmaAllocator allocator, VkmaPool pool) {
 }
 inline void vkmaGetPoolStatistics(VkmaAllocator allocator, VkmaPool pool,
                                   VkmaStatistics *pPoolStats) {
-  vkmaGetPoolStatistics(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaPool>(pool),
-                        reinterpret_cast<VmaStatistics *>(pPoolStats));
+  vmaGetPoolStatistics(reinterpret_cast<VmaAllocator>(allocator), reinterpret_cast<VmaPool>(pool),
+                       reinterpret_cast<VmaStatistics *>(pPoolStats));
 }
 inline void vkmaCalculatePoolStatistics(VkmaAllocator allocator, VkmaPool pool,
                                         VkmaDetailedStatistics *pPoolStats) {
-  vkmaCalculatePoolStatistics(reinterpret_cast<VmaAllocator>(allocator),
-                              reinterpret_cast<VmaPool>(pool),
-                              reinterpret_cast<VmaDetailedStatistics *>(pPoolStats));
+  vmaCalculatePoolStatistics(reinterpret_cast<VmaAllocator>(allocator),
+                             reinterpret_cast<VmaPool>(pool),
+                             reinterpret_cast<VmaDetailedStatistics *>(pPoolStats));
 }
 inline VkmaResult vkmaCheckPoolCorruption(VkmaAllocator allocator, VkmaPool pool) {
   return vmaCheckPoolCorruption(reinterpret_cast<VmaAllocator>(allocator),
@@ -512,25 +517,24 @@ inline VkmaResult vkmaBeginDefragmentation(VkmaAllocator allocator,
                                  reinterpret_cast<const VmaDefragmentationInfo *>(pInfo),
                                  reinterpret_cast<VmaDefragmentationContext *>(pContext));
 }
-inline VkmaResult vkmaEndDefragmentation(VkmaAllocator allocator,
-                                         VkmaDefragmentationContext context,
-                                         VkmaDefragmentationStats *pStats) {
-  return vmaEndDefragmentation(reinterpret_cast<VmaAllocator>(allocator),
-                               reinterpret_cast<VmaDefragmentationContext>(context),
-                               reinterpret_cast<VmaDefragmentationStats *>(pStats));
+inline void vkmaEndDefragmentation(VkmaAllocator allocator, VkmaDefragmentationContext context,
+                                   VkmaDefragmentationStats *pStats) {
+  vmaEndDefragmentation(reinterpret_cast<VmaAllocator>(allocator),
+                        reinterpret_cast<VmaDefragmentationContext>(context),
+                        reinterpret_cast<VmaDefragmentationStats *>(pStats));
 }
 inline VkmaResult vkmaBeginDefragmentationPass(VkmaAllocator allocator,
-                                               VkmaDefragmentationContext pContext,
-                                               const VkmaDefragmentationPassMoveInfo *pPassInfo) {
+                                               VkmaDefragmentationContext context,
+                                               VkmaDefragmentationPassMoveInfo *pPassInfo) {
   return vmaBeginDefragmentationPass(reinterpret_cast<VmaAllocator>(allocator),
-                                     reinterpret_cast<VmaDefragmentationContext>(pContext),
+                                     reinterpret_cast<VmaDefragmentationContext>(context),
                                      reinterpret_cast<VmaDefragmentationPassMoveInfo *>(pPassInfo));
 }
 inline VkmaResult vkmaEndDefragmentationPass(VkmaAllocator allocator,
-                                             VkmaDefragmentationContext pContext,
-                                             const VkmaDefragmentationPassMoveInfo *pPassInfo) {
+                                             VkmaDefragmentationContext context,
+                                             VkmaDefragmentationPassMoveInfo *pPassInfo) {
   return vmaEndDefragmentationPass(reinterpret_cast<VmaAllocator>(allocator),
-                                   reinterpret_cast<VmaDefragmentationContext>(pContext),
+                                   reinterpret_cast<VmaDefragmentationContext>(context),
                                    reinterpret_cast<VmaDefragmentationPassMoveInfo *>(pPassInfo));
 }
 
@@ -604,8 +608,8 @@ inline void vkmaDestroyImage(VkmaAllocator allocator, VkmaImage image) {
 
 inline VkmaResult vkmaCreateVirtualBlock(const VkmaVirtualBlockCreateInfo *pCreateInfo,
                                          VkmaVirtualBlock *pVirtualBlock) {
-  return vmaCreatePool(reinterpret_cast<const VmaVirtualBlockCreateInfo *>(pCreateInfo),
-                       reinterpret_cast<VmaVirtualBlock *>(pVirtualBlock));
+  return vmaCreateVirtualBlock(reinterpret_cast<const VmaVirtualBlockCreateInfo *>(pCreateInfo),
+                               reinterpret_cast<VmaVirtualBlock *>(pVirtualBlock));
 }
 inline void vkmaDestroyVirtualBlock(VkmaVirtualBlock virtualBlock) {
   vmaDestroyVirtualBlock(reinterpret_cast<VmaVirtualBlock>(virtualBlock));
@@ -628,9 +632,9 @@ inline VkmaResult vkmaVirtualAllocate(VkmaVirtualBlock virtualBlock,
                             reinterpret_cast<const VmaVirtualAllocationCreateInfo *>(pCreateInfo),
                             reinterpret_cast<VmaVirtualAllocation *>(pAllocation), nullptr);
 }
-inline VkmaResult vkmaVirtualFree(VkmaVirtualBlock virtualBlock, VkmaVirtualAllocation allocation) {
-  return vmaVirtualFree(reinterpret_cast<VmaVirtualBlock>(virtualBlock),
-                        reinterpret_cast<VmaVirtualAllocation>(allocation));
+inline void vkmaVirtualFree(VkmaVirtualBlock virtualBlock, VkmaVirtualAllocation allocation) {
+  vmaVirtualFree(reinterpret_cast<VmaVirtualBlock>(virtualBlock),
+                 reinterpret_cast<VmaVirtualAllocation>(allocation));
 }
 inline void vkmaClearVirtualBlock(VkmaVirtualBlock virtualBlock) {
   vmaClearVirtualBlock(reinterpret_cast<VmaVirtualBlock>(virtualBlock));
